@@ -1,0 +1,40 @@
+<% layout("layout/boilerplate.ejs") %>
+
+<div class="allBlogs" style="background-color: white; height: auto">
+  <% blogs.forEach(blog=>{ %>
+  <div class="showBlogs">
+    <div class="blog-header">
+      <h4><%= blog.title %></h4>
+    </div>
+    <div class="blog-body">
+      <% if(blog.time){ %>
+      <small>
+        <%= ("0"+blog.time.getHours()).slice(-2)
+        %>:<%=("0"+blog.time.getMinutes()).slice(-2)%> ,
+      </small>
+      <small>
+        <%= ("0"+blog.time.getDate()).slice(-2)
+        %>-<%=String("0"+(blog.time.getMonth()+1)).slice(-2)%>-<%=blog.time.getFullYear()
+        %> <% } %>
+      </small>
+      <p class="blog-desc"><%=blog.description%></p>
+    </div>
+
+    <form action="/blogs/<%= blog._id %> ">
+      <button type="submit" class="btn btn-primary readMore">Read More</button>
+    </form>
+
+    <% if((currentUser && blog.author.equals(currentUser._id)) || (currentUser
+    && currentUser.username=="abhinav")) {%>
+    <a href="/blogs/<%=blog._id%>/edit " class="btn btn-success xtra">Edit</a>
+    <form
+      style="display: inline-block"
+      action="/<%=blog._id%>?_method=DELETE"
+      method="post"
+    >
+      <button class="btn btn-danger xtra-2" type="submit">Delete</button>
+    </form>
+    <% } else {%> <% } %>
+  </div>
+  <% }) %>
+</div>
